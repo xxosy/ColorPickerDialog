@@ -5,7 +5,7 @@ publish {
     userOrg = 'duck'
     groupId = 'dev.duck'
     artifactId = 'color-picker-dialog'
-    publishVersion = '0.1.5'
+    publishVersion = '0.1.6'
     desc = 'Android ColorPickerDialog'
     website = 'https://github.com/xxosy/ColorPickerDialog'
     issueTracker = "${website}/issues"

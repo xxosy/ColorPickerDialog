@@ -37,7 +37,15 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
   private EditText etColorGreen;
   private EditText etColorBlue;
 
-  private FrameLayout btnGetColor;
+  private FrameLayout btnPositive;
+  private FrameLayout btnNegative;
+
+  private TextView tvPositiveButtonLabel;
+  private TextView tvNegativeButtonLabel;
+
+  private String positiveButtonLabel;
+  private String negativeButtonLabel;
+
 
   private String mColorR = "00";
   private String mColorG = "00";
@@ -49,7 +57,7 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
   private String mComplementaryColorG = "00";
   private String mComplementaryColorB = "00";
 
-  private OnColorPickerButtonClickListener mOnColorPickerButtonClickListener;
+  private OnPositiveButtonClickListener mOnColorPickerButtonClickListener;
 
   public ColorPickerDialog(Context context) {
     super(context);
@@ -66,15 +74,8 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     this.context = context;
   }
 
-  public void setOnColorPickerButtonClickListener(OnColorPickerButtonClickListener onColorPickerButtonClickListener) {
+  public void setOnPositiveButtonClickListener(OnPositiveButtonClickListener onColorPickerButtonClickListener) {
     mOnColorPickerButtonClickListener = onColorPickerButtonClickListener;
-    btnGetColor.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        mOnColorPickerButtonClickListener.onClick(view);
-        hide();
-      }
-    });
   }
 
   public String getColor() {
@@ -115,7 +116,32 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     etColorGreen = (EditText) findViewById(R.id.et_color_green);
     etColorBlue = (EditText) findViewById(R.id.et_color_blue);
 
-    btnGetColor = (FrameLayout) findViewById(R.id.btn_get_color);
+    btnPositive = (FrameLayout) findViewById(R.id.btn_positive);
+    btnNegative = (FrameLayout) findViewById(R.id.btn_negative);
+
+    tvPositiveButtonLabel = (TextView) findViewById(R.id.tv_positive_button_label);
+    tvNegativeButtonLabel = (TextView) findViewById(R.id.tv_negative_button_label);
+    if(positiveButtonLabel!=null) {
+      tvPositiveButtonLabel.setText(positiveButtonLabel);
+      btnPositive.setVisibility(View.VISIBLE);
+    }
+    if(negativeButtonLabel!=null) {
+      tvNegativeButtonLabel.setText(negativeButtonLabel);
+      btnNegative.setVisibility(View.VISIBLE);
+    }
+    btnPositive.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        mOnColorPickerButtonClickListener.onClick(view);
+        hide();
+      }
+    });
+    btnNegative.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        hide();
+      }
+    });
 
     long iColorR = Long.parseLong(mColorR, 16);
     long iColorG = Long.parseLong(mColorG, 16);
@@ -196,10 +222,18 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     DisplayMetrics dm = context.getResources().getDisplayMetrics();
     int width = dm.widthPixels;
     lpWindow.height = WindowManager.LayoutParams.WRAP_CONTENT;
-    lpWindow.width = (int) (width * 0.7);
+    lpWindow.width = (int) (width * 0.8);
     getWindow().setAttributes(lpWindow);
 
     frameColorBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (width * 0.5)));
+  }
+
+  public void setPositiveButtonLabel(String label){
+    positiveButtonLabel = label;
+  }
+
+  public void setNegativeButtonLabel(String label){
+    negativeButtonLabel = label;
   }
 
   private void makeColor() {
@@ -208,12 +242,12 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     refreshColorPicker(mColor, complementaryColor);
   }
 
-  private void refreshColorPicker(String color, String complementaryColore) {
+  private void refreshColorPicker(String color, String complementaryColor) {
     tvColor.setText(color);
-    tvColor.setTextColor(Color.parseColor(complementaryColore));
+    tvColor.setTextColor(Color.parseColor(complementaryColor));
     frameBackgrounTvColor.setBackgroundColor(Color.parseColor(color));
     frameColorBox.setBackgroundColor(Color.parseColor(color));
-    frameBorderColor.setBackgroundColor(Color.parseColor(complementaryColore));
+    frameBorderColor.setBackgroundColor(Color.parseColor(complementaryColor));
   }
 
   @Override
@@ -273,9 +307,45 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
   }
 
   public static final class Builder {
+    Context context;
 
-    public Builder() {
+    String positiveButtonLabel;
+    String negativeButtonLabel;
 
+    OnPositiveButtonClickListener onPositiveButtonClickListener;
+
+    public Builder(Context context) {
+      this.context = context;
+    }
+
+    public Builder positiveButton(String label){
+      this.positiveButtonLabel = label;
+      return this;
+    }
+
+    public Builder negativeButton(String label){
+      this.negativeButtonLabel = label;
+      return this;
+    }
+
+    public Builder positiveButtonClickListener(OnPositiveButtonClickListener onPositiveButtonClickListener){
+      this.onPositiveButtonClickListener = onPositiveButtonClickListener;
+      return this;
+    }
+
+    public ColorPickerDialog build(){
+      ColorPickerDialog dialog = new ColorPickerDialog(context);
+      if(positiveButtonLabel!=null) {
+        dialog.setPositiveButtonLabel(positiveButtonLabel);
+      }
+      if(negativeButtonLabel!=null) {
+        dialog.setNegativeButtonLabel(negativeButtonLabel);
+      }
+      if(onPositiveButtonClickListener!=null) {
+        dialog.setOnPositiveButtonClickListener(onPositiveButtonClickListener);
+      }
+
+      return dialog;
     }
   }
 }
