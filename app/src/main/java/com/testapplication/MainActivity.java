@@ -1,5 +1,6 @@
 package com.testapplication;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         .positiveButtonClickListener(new OnPositiveButtonClickListener() {
           @Override
           public void onClick(View view) {
-
+            background.setBackgroundColor(Color.parseColor(dialog.getColor()));
           }
         })
         .build();

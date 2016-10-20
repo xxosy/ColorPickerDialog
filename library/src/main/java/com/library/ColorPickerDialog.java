@@ -3,11 +3,13 @@ package com.library;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -97,6 +99,7 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.dialog_color_picker);
     frameColorPicker = (FrameLayout) findViewById(R.id.frame_color_picker);
     frameColorBox = (FrameLayout) findViewById(R.id.frame_color_box);
@@ -223,6 +226,8 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     int width = dm.widthPixels;
     lpWindow.height = WindowManager.LayoutParams.WRAP_CONTENT;
     lpWindow.width = (int) (width * 0.8);
+
+    getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     getWindow().setAttributes(lpWindow);
 
     frameColorBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (width * 0.5)));
