@@ -13,4 +13,4 @@ Download Gradle:
 
 Usage Image
 -----------
-![Image](./images/dialog_1.png"width:200px;height:400px")
+<p><img src="./images/dialog_1.png" alt="마크다운 로고" width="200px" height="400px"></p>
