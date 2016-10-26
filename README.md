@@ -13,4 +13,4 @@ Download Gradle:
 
 Usage Image
 -----------
-![Image](./images/dialog_1.png)
+![Image](./images/dialog_1.png"width:200px;height:400px")
