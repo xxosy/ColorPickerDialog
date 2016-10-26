@@ -11,6 +11,20 @@ Download Gradle:
 	}</code>
 </pre>
 
+Usage Example
+-------------
+	ColorPickerDialog dialog = new ColorPickerDialog.Builder(this)
+        .positiveButton("OK")
+        .negativeButton("CANCEL")
+        .positiveButtonClickListener(new OnPositiveButtonClickListener() {
+          @Override
+          public void onClick(View view) {
+            background.setBackgroundColor(Color.parseColor(dialog.getColor()));
+          }
+        })
+        .build();
+    dialog.show();
+
 Usage Image
 -----------
-<p><img src="./images/dialog_1.png" alt="마크다운 로고" width="200px" height="400px"></p>
+<p><img src="./images/dialog_1.png" alt="Usage" width="200px" height="356px"></p>
